@@ -1,0 +1,79 @@
+<html>
+
+<head>
+
+    <script>
+
+        const serviceURL = "http://localhost:9000/modelo";
+
+        async function getData() {
+
+            let data = await window.fetch(serviceURL);
+
+            let registers = await data.json();
+
+            let tableBody = document.getElementById("table_data");
+
+            registers.forEach(register => {
+
+                let newRow = tableBody.insertRow(-1);
+
+                newRow.insertCell(0).innerText = register.id;
+
+                newRow.insertCell(1).innerText = register.ano;
+
+                newRow.insertCell(2).innerText = register.descricao;
+
+            })
+
+        }
+
+        function onClick(){
+            location.href = 'form_modelo.html'
+        }
+
+    </script>
+
+    <style>
+        #container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    </style>
+
+</head>
+
+<body onload="getData()">
+    <div id="container">
+        <button onclick="javascript:onClick()">Registrar Novo</button>
+        <table width="700" border="1px">
+
+            <thead>
+
+                <tr>
+
+                    <th bgcolor="red">ID</th>
+
+                    <th bgcolor="red">Ano</th>
+
+                    <th bgcolor="red">Classificação</th>
+
+
+                </tr>
+
+            </thead>
+
+            <tbody id="table_data">
+
+            </tbody>
+
+        </table>
+    </div>
+
+</body>
+
+</html>

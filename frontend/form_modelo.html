@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Formulario Modelo</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+
+    <script>
+        async function onSubmit(){
+            const ano = document.getElementById('ano').value
+            const descricao = document.getElementById('descricao').value
+
+            const data = {
+                ano,
+                descricao
+            }
+
+            await fetch('http://localhost:9000/modelo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => location.href = 'index.html').catch(err => console.log(err))
+        }
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <form class="formulario" method="post" action="javascript:onSubmit()">
+            <p style="color: red;"> DIGITE OS DADOS DO VEÍCULO</p>
+
+            <div class="field">
+                <label for="ano">Ano do veículo:</label>
+                <input type="number" id="ano" class="numberField" name="ano" placeholder="Digite o ano do veículo*" required>
+            </div>
+
+            <div class="field">
+                <label for="classificação">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição do veículo*" required>
+            </div>
+
+            <input type="submit" name="acao" value="Enviar">
+        </form>
+    </div>
+</body>
+
+</html>

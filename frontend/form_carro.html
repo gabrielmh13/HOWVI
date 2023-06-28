@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Formulario Carros</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+
+    <script>
+        async function onSubmit(){
+            const cor = document.getElementById('cor').value
+            const codigo_modelo = document.getElementById('selectField').value
+            const descricao = document.getElementById('descricao').value
+            const observacoes = document.getElementById('observacoes').value
+
+            const data = {
+                cor,
+                codigo_modelo,
+                descricao,
+                observacoes
+            }
+
+            await fetch('http://localhost:9000/carro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => location.href = 'index.html').catch(err => console.log(err))
+        }
+
+        window.onload = async () => {
+            const selectElement = document.getElementById('selectField')
+
+            await fetch('http://localhost:9000/modelo')
+                .then(response => response.json())
+                .then((data) => {
+                    data.forEach(modelo => {
+                        const optionElement = document.createElement('option')
+                        optionElement.value = modelo.id
+                        optionElement.textContent = modelo.descricao
+                        selectElement.appendChild(optionElement)
+                    });
+                })
+        }
+    </script>
+
+</head>
+
+<body>
+    <div id="container">
+        <form class="formulario" method="post" action="javascript:onSubmit()">
+            <p style="color: red;"> DIGITE OS DADOS DO VEÍCULO</p>
+
+            <div class="field">
+                <label for="cor">Cor do veículo:</label>
+                <input type="text" id="cor" name="cor" placeholder="Digite a cor do veículo*" required>
+            </div>
+
+            <div class="field" id="select">
+                <label for="selectField">Modelo do veículo:</label>
+                <select id="selectField"></select>
+            </div>
+
+            <div class="field">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Digite alguma descrição*" required>
+            </div>
+
+            <div class="field">
+                <label for="observacoes">Observações:</label>
+                <input type="text" id="observacoes" name="observacoes" placeholder="Digite alguma observação*" required>
+            </div>
+
+            <input type="submit" name="acao" value="Enviar">
+        </form>
+    </div>
+</body>
+
+</html>
